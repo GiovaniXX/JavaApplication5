@@ -210,6 +210,7 @@ public class FrmFatura extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        int selectedIndex = cmbProduto.getSelectedIndex();
         if (cmbProduto.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(rootPane, "Favor selecionar um produto");
             cmbProduto.requestFocusInWindow();
@@ -238,8 +239,8 @@ public class FrmFatura extends javax.swing.JInternalFrame {
         }
 
         // Cria um array para armazenar os dados do produto a serem adicionados na tabela
+        int pos = selectedIndex - 1;
         String[] registro = new String[5];
-        int pos = 0;
         registro[0] = msDados.getProdutos()[pos].getIdProduto();
         registro[1] = msDados.getProdutos()[pos].getDescricao();
         registro[2] = String.valueOf(msDados.getProdutos()[pos].getPreco());
