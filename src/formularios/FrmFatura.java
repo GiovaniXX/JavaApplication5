@@ -11,12 +11,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class FrmFatura extends javax.swing.JInternalFrame {
 
-    private Dados msDados;
+    private Dados dados;
     private DefaultTableModel tableModel;
+
+    public void setDados(Dados dados) {
+        this.dados = dados;
+    }
 
     public FrmFatura() {
         initComponents();
-        this.msDados = new Dados();
+        //this.dados = new Dados();
     }
 
     @SuppressWarnings("unchecked")
@@ -241,11 +245,11 @@ public class FrmFatura extends javax.swing.JInternalFrame {
         // Cria um array para armazenar os dados do produto a serem adicionados na tabela
         int pos = selectedIndex - 1;
         String[] registro = new String[5];
-        registro[0] = msDados.getProdutos()[pos].getIdProduto();
-        registro[1] = msDados.getProdutos()[pos].getDescricao();
-        registro[2] = String.valueOf(msDados.getProdutos()[pos].getPreco());
+        registro[0] = dados.getProdutos()[pos].getIdProduto();
+        registro[1] = dados.getProdutos()[pos].getDescricao();
+        registro[2] = String.valueOf(dados.getProdutos()[pos].getPreco());
         registro[3] = String.valueOf(quantidade);
-        registro[4] = String.valueOf(quantidade * msDados.getProdutos()[pos].getPreco());
+        registro[4] = String.valueOf(quantidade * dados.getProdutos()[pos].getPreco());
 
         // Adiciona a linha com os dados do produto à tabela
         tableModel.addRow(registro);
@@ -264,10 +268,10 @@ public class FrmFatura extends javax.swing.JInternalFrame {
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         Opcoes opc = new Opcoes("ID Produto", "Selecione um produto");
         cmbProduto.addItem(opc.getDescricao());
-        for (int i = 0; i < msDados.numeroProdutos(); i++) {
+        for (int i = 0; i < dados.numeroProdutos(); i++) {
             opc = new Opcoes(
-                    msDados.getProdutos()[i].getIdProduto(),
-                    msDados.getProdutos()[i].getDescricao());
+                    dados.getProdutos()[i].getIdProduto(),
+                    dados.getProdutos()[i].getDescricao());
             cmbProduto.addItem(opc.getDescricao());
         }
 
@@ -350,9 +354,5 @@ public class FrmFatura extends javax.swing.JInternalFrame {
         // Atualizar os campos txtTotalQuantidade e txtTotalValor com os valores totais calculados
         txtTotalQuantidade.setText(String.valueOf(totalQuantidade));
         txtTotalValor.setText(String.valueOf(totalValor));
-    }
-
-    void setDados(Dados msDados) {
-        this.msDados = msDados;
     }
 }

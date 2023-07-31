@@ -9,14 +9,14 @@ import javax.swing.table.DefaultTableModel;
 
 public class FrmProdutos extends javax.swing.JInternalFrame {
 
-    private Dados msDados;
+    private Dados dados;
     private final int proAtual = 0;
     private boolean novo = false;
     private DefaultTableModel mTabela;
     private double preco;
 
-    public void setDados(Dados msDados) {
-        this.msDados = msDados;
+    public void setDados(Dados dados) {
+        this.dados = dados;
     }
 
     public FrmProdutos() {
@@ -253,7 +253,7 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
             return;
         }
 
-        int pos = msDados.posicaoProduto(txtIdProduto.getText());
+        int pos = dados.posicaoProduto(txtIdProduto.getText());
 
         if (pos != -1) {
             JOptionPane.showMessageDialog(rootPane, "Este produto já existe");
@@ -262,7 +262,7 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
         }
 
         Produto mProduto = new Produto(txtIdProduto.getText(), txtDescricao.getText(), preco, cmbImposto.getSelectedIndex(), txtAnotacao.getText());
-        String msg = msDados.adicionarProduto(mProduto);
+        String msg = dados.adicionarProduto(mProduto);
         JOptionPane.showMessageDialog(rootPane, msg);
 
         btnNovo.setEnabled(true);
@@ -289,13 +289,13 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void mostrarRegistro() {
-        Produto produto = msDados.getProdutos()[proAtual];
+        Produto produto = dados.getProdutos()[proAtual];
         if (produto != null) {
-            txtIdProduto.setText(msDados.getProdutos()[proAtual].getIdProduto());
-            txtDescricao.setText(msDados.getProdutos()[proAtual].getDescricao());
-            txtPreco.setText(String.valueOf(msDados.getProdutos()[proAtual].getPreco()));
-            cmbImposto.setSelectedIndex(msDados.getProdutos()[proAtual].getImposto());
-            txtAnotacao.setText(msDados.getProdutos()[proAtual].getAnotacao());
+            txtIdProduto.setText(dados.getProdutos()[proAtual].getIdProduto());
+            txtDescricao.setText(dados.getProdutos()[proAtual].getDescricao());
+            txtPreco.setText(String.valueOf(dados.getProdutos()[proAtual].getPreco()));
+            cmbImposto.setSelectedIndex(dados.getProdutos()[proAtual].getImposto());
+            txtAnotacao.setText(dados.getProdutos()[proAtual].getAnotacao());
         } else {
             JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
             JOptionPane.showMessageDialog(rootPane, "Cadastre um produto!");
@@ -307,12 +307,12 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
         String titulos[] = {"ID Produto", "Descrição", "Preço", "Imposto", "Anotação"};
         String registro[] = new String[5];
         mTabela = new DefaultTableModel(null, titulos);
-        for (int i = 0; i < msDados.numeroProdutos(); i++) {
-            registro[0] = msDados.getProdutos()[i].getIdProduto();
-            registro[1] = msDados.getProdutos()[i].getDescricao();
-            registro[2] = String.valueOf(msDados.getProdutos()[i].getPreco());
-            registro[3] = imposto(msDados.getProdutos()[i].getImposto());
-            registro[4] = msDados.getProdutos()[i].getAnotacao();
+        for (int i = 0; i < dados.numeroProdutos(); i++) {
+            registro[0] = dados.getProdutos()[i].getIdProduto();
+            registro[1] = dados.getProdutos()[i].getDescricao();
+            registro[2] = String.valueOf(dados.getProdutos()[i].getPreco());
+            registro[3] = imposto(dados.getProdutos()[i].getImposto());
+            registro[4] = dados.getProdutos()[i].getAnotacao();
             mTabela.addRow(registro);
         }
         tblProdutos.setModel(mTabela);

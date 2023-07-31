@@ -12,7 +12,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
     public String usuario;
     public Dados dados;
 
-    //private Dados msDados;
     public void setPerfil(int perfil) {
         this.perfil = perfil;
     }
@@ -146,7 +145,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuArquivoProdutosActionPerformed
 
     private void mnuArquivoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuArquivoSairActionPerformed
-        dados.salvarTodo();
         System.exit(0);
 
         int id = evt.getID();
