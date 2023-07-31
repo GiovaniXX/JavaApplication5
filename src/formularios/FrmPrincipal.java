@@ -6,15 +6,36 @@ import com.formdev.flatlaf.IntelliJTheme;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    private Dados msDados;
+    public int perfil;
+    public String senha;
+    public String chave;
+    public String usuario;
+    public Dados dados;
 
-    public void setDados(Dados msDados) {
-        this.msDados = msDados;
+    //private Dados msDados;
+    public void setPerfil(int perfil) {
+        this.perfil = perfil;
+    }
+
+    public void setDados(Dados dados) {
+        this.dados = dados;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setChave(String chave) {
+        this.chave = chave;
     }
 
     public FrmPrincipal() {
         initComponents();
-        msDados = new Dados();
+        dados = new Dados();
 
     }
 
@@ -107,10 +128,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-//        BackGround background = new BackGround("/img/Logo.jpg");
-//        dpnDesk.add(background);
-//        dpnDesk.moveToBack(background);
-//        ((BackGround) dpnDesk).setImagem("/img/Logo.jpg");
+        BackGround background = new BackGround("/img/Logo.jpg");
+        dpnDesk.add(background);
 
         int id = evt.getID();
         System.out.println("ID do evento: " + id);
@@ -118,7 +137,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mnuArquivoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuArquivoProdutosActionPerformed
         FrmProdutos msProdutos = new FrmProdutos();
-        msProdutos.setDados(msDados);
+        msProdutos.setDados(dados);
         dpnDesk.add(msProdutos);
         msProdutos.show();
 
@@ -127,7 +146,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuArquivoProdutosActionPerformed
 
     private void mnuArquivoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuArquivoSairActionPerformed
-        msDados.salvarTodo();
+        dados.salvarTodo();
         System.exit(0);
 
         int id = evt.getID();
@@ -136,7 +155,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mnuMovimentosNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMovimentosNovaVendaActionPerformed
         FrmFatura mFatura = new FrmFatura();
-        mFatura.setDados(msDados);
+        mFatura.setDados(dados);
         dpnDesk.add(mFatura);
         mFatura.show();
 

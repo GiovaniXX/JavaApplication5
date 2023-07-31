@@ -1,5 +1,19 @@
 package classes;
 
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,21 +23,83 @@ import java.io.PrintWriter;
 
 public final class Dados {
 
+    public static Connection cnn;
     private final int maxPro = 50;
     private final Produto msProdutos[] = new Produto[maxPro];
     private int conPro = 0;
 
     public Dados() {
-//        criarDiretorio("Data");
+        cnn = getConnection();
         preencherProdutos();
     }
 
-//    public static void criarDiretorio(String Data) {
-//        File diretorio = new File(Data);
-//        if (!diretorio.exists()) {
-//            diretorio.mkdirs();
-//        }
-//    }
+    //-------------------------------------------CONEXÃO----------------------------------------------------------------//
+    private Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Properties props = new Properties();
+            props.load(new FileInputStream("E:/PROJETOS JAVA 2023/Umbrella_Pharmaceutical_Inc/config.properties"));
+            String dbUrl = props.getProperty("db.url");
+            String dbUser = props.getProperty("db.user");
+            String dbPassword = props.getProperty("db.password");
+
+            return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao carregar o driver ou ler as propriedades", ex);
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao estabelecer a conexão com o banco de dados", ex);
+            return null;
+        }
+    }
+
+    //-----------------------------------------VALIDAÇÃO---------------------------------------------------------------------//
+    public boolean validarUsuario(String usuario, String senha, String chave) {
+        String sql = "SELECT 1 FROM tbusuarios WHERE idUsuario = ? AND senha = ? AND chave = ?";
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, usuario);
+            statement.setString(2, senha);
+            statement.setString(3, chave);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    //-------------------------------------------------PERFIL------------------------------------------------------------------//
+    public int getPerfil(String usuario) {
+        String sql = "SELECT idPerfil FROM tbusuarios WHERE idUsuario = ?";
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, usuario);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idPerfil");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter o perfil do usuário", ex);
+        }
+        return -1;
+    }
+    //-------------------------------------------------------------------------------------------------------------------------//
+
+    public boolean existeUsuario(String usuario) {
+        String sql = "SELECT COUNT(*) FROM tbusuarios WHERE idUsuario = ?";
+        try (var ps = cnn.prepareStatement(sql)) {
+            ps.setString(1, usuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
     public int numeroProdutos() {
         return conPro;
     }
