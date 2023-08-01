@@ -1,12 +1,12 @@
 package formularios;
 
 import classes.BackGround;
-import classes.Dados;
+import classes.Database;
 import com.formdev.flatlaf.IntelliJTheme;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    public Dados dados;
+    public Database dados;
 
     public FrmPrincipal() {
         initComponents();
@@ -111,10 +111,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void mnuArquivoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuArquivoProdutosActionPerformed
-        FrmProdutos msProdutos = new FrmProdutos();
-        msProdutos.setDados(dados);
-        dpnDesk.add(msProdutos);
-        msProdutos.show();
+        FrmProdutos produtos = new FrmProdutos();
+        produtos.setDados(dados);
+        dpnDesk.add(produtos);
+        produtos.show();
 
         int id = evt.getID();
         System.out.println("ID do evento: " + id);
@@ -128,10 +128,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuArquivoSairActionPerformed
 
     private void mnuMovimentosNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMovimentosNovaVendaActionPerformed
-        FrmFatura mFatura = new FrmFatura();
-        mFatura.setDados(dados);
-        dpnDesk.add(mFatura);
-        mFatura.show();
+        FrmVendas vendas = new FrmVendas();
+        vendas.setDados(dados);
+        dpnDesk.add(vendas);
+        vendas.show();
 
         int id = evt.getID();
         System.out.println("ID do evento: " + id);
