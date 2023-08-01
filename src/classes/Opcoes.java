@@ -2,8 +2,8 @@ package classes;
 
 public class Opcoes {
 
-    private String valor;
-    private String descricao;
+    private final String valor;
+    private final String descricao;
 
     public Opcoes(String valor, String descricao) {
         this.valor = valor;

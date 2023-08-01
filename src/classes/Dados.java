@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,19 +93,42 @@ public final class Dados {
     }
     //------------------------------------------------MÉTODOS GETS-------------------------------------------------------//
 
-    public ResultSet getProdutos() {
+    public List<Produto> getProdutos() {
         try {
+            List<Produto> produtos = new ArrayList<>();
             String sql = "SELECT * FROM tbprodutos";
             PreparedStatement statement = getConnection().prepareStatement(sql);
-            return statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto(
+                        rs.getString("idProduto"),
+                        rs.getString("descricao"),
+                        rs.getFloat("preco"),
+                        rs.getInt("idImposto"),
+                        rs.getString("notas"));
+                produtos.add(produto);
+            }
+
+            return produtos;
         } catch (SQLException ex) {
             Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
-
             return null;
         }
     }
 
-    public Produto getProdutos(String idProduto) {
+//    public ResultSet getProdutos() {
+//        try {
+//            String sql = "SELECT * FROM tbprodutos";
+//            PreparedStatement statement = getConnection().prepareStatement(sql);
+//            return statement.executeQuery();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
+//
+//            return null;
+//        }
+//    }
+    public Produto getProduto(String idProduto) {
         try {
             Produto mProduto = null;
             String sql = "SELECT * FROM tbprodutos " + "WHERE idProduto = '" + idProduto + "'";

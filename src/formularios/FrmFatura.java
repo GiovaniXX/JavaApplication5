@@ -2,8 +2,10 @@ package formularios;
 
 import classes.Dados;
 import classes.Opcoes;
+import classes.Produto;
 import classes.Utilidades;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -243,15 +245,29 @@ public class FrmFatura extends javax.swing.JInternalFrame {
             return;
         }
 
-        // Cria um array para armazenar os dados do produto a serem adicionados na tabela
-        int pos = selectedIndex - 1;
-        String[] registro = new String[5];
-        registro[0] = dados.getProdutos()[pos].getIdProduto();
-        registro[1] = dados.getProdutos()[pos].getDescricao();
-        registro[2] = String.valueOf(dados.getProdutos()[pos].getPreco());
-        registro[3] = String.valueOf(quantidade);
-        registro[4] = String.valueOf(quantidade * dados.getProdutos()[pos].getPreco());
+        List<Produto> produtos = dados.getProdutos();
+        if (produtos == null || produtos.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Não há produtos cadastrados.");
+            return;
+        }
 
+        int pos = selectedIndex - 1;
+        Produto produtoSelecionado = produtos.get(pos);
+        String[] registro = new String[5];
+        registro[0] = produtoSelecionado.getIdProduto();
+        registro[1] = produtoSelecionado.getDescricao();
+        registro[2] = String.valueOf(produtoSelecionado.getPreco());
+        registro[3] = String.valueOf(quantidade);
+        registro[4] = String.valueOf(quantidade * produtoSelecionado.getPreco());
+
+//        // Cria um array para armazenar os dados do produto a serem adicionados na tabela
+//        int pos = selectedIndex - 1;
+//        String[] registro = new String[5];
+//        registro[0] = dados.getProdutos()[pos].getIdProduto();
+//        registro[1] = dados.getProdutos()[pos].getDescricao();
+//        registro[2] = String.valueOf(dados.getProdutos()[pos].getPreco());
+//        registro[3] = String.valueOf(quantidade);
+//        registro[4] = String.valueOf(quantidade * dados.getProdutos()[pos].getPreco());
         // Adiciona a linha com os dados do produto à tabela
         tableModel.addRow(registro);
 
@@ -271,8 +287,8 @@ public class FrmFatura extends javax.swing.JInternalFrame {
         cmbProduto.addItem(opc.getDescricao());
         for (int i = 0; i < dados.numeroProdutos(); i++) {
             opc = new Opcoes(
-                    dados.getProdutos()[i].getIdProduto(),
-                    dados.getProdutos()[i].getDescricao());
+                    dados.getProdutos().get(i).getIdProduto(),
+                    dados.getProdutos().get(i).getDescricao());
             cmbProduto.addItem(opc.getDescricao());
         }
 
