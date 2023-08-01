@@ -20,7 +20,8 @@ public class FrmFatura extends javax.swing.JInternalFrame {
 
     public FrmFatura() {
         initComponents();
-        //this.dados = new Dados();
+        this.dados = new Dados();
+        //Dados dados = new Dados;
     }
 
     @SuppressWarnings("unchecked")

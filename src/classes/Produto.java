@@ -2,13 +2,13 @@ package classes;
 
 public class Produto {
 
-    private int idProduto;
+    private String idProduto;
     private String descricao;
     private double preco;
     private int imposto;
     private String anotacao;
 
-    public Produto(int idProduto, String descricao, double preco, int imposto, String anotacao) {
+    public Produto(String idProduto, String descricao, double preco, int imposto, String anotacao) {
         this.idProduto = idProduto;
         this.descricao = descricao;
         this.preco = preco;
@@ -16,11 +16,11 @@ public class Produto {
         this.anotacao = anotacao;
     }
 
-    public int getIdProduto() {
+    public String getIdProduto() {
         return idProduto;
     }
 
-    public void setIdProduto(int idProduto) {
+    public void setIdProduto(String idProduto) {
         this.idProduto = idProduto;
     }
 
