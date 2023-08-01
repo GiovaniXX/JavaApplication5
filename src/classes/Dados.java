@@ -11,50 +11,45 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class Dados {
+public class Dados {
 
-    public static Connection cnn;
+    public Connection cnn;
 
     public Dados() {
+        cnn = getConnection();
     }
 
-    //--------------------------------------------CONNECTION---------------------------------------------------------------//
     private Connection getConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Informações de conexão
-            String dbUrl = "jdbc:mysql://localhost:3306/SGBD2023";
-            String dbUser = "root";
-            String dbPassword = "PerfectWorld2023@$";
-
-            return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao carregar o driver", ex);
-            return null;
+            // Substitua "url_do_banco", "usuario" e "senha" pelas informações corretas do seu banco de dados.
+            String url = "jdbc:mysql://localhost:3306/nome_do_banco_de_dados";
+            String usuario = "seu_usuario";
+            String senha = "sua_senha";
+            cnn = DriverManager.getConnection(url, usuario, senha);
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao estabelecer a conexão com o banco de dados", ex);
-            return null;
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao conectar ao banco de dados", ex);
         }
+        return null;
     }
 
-    //-----------------------------------------------CONFIRMAÇÕES------------------------------------------------------//
-    public boolean existeProduto(String produto) {
-        String sql = "SELECT COUNT(*) FROM tbprodutos WHERE idProduto = ?";
+//-----------------------------------------------CONFIRMAÇÕES------------------------------------------------------//
+    public boolean existeProduto(String produto) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM produtos WHERE idProduto = ?";
         try (var ps = cnn.prepareStatement(sql)) {
             ps.setString(1, produto);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
     }
 
     //------------------------------------------ADICIONANDO NO SGBD---------------------------------------------------//
     public String adicionarProduto(Produto mProduto) {
-        String query = "INSERT INTO tbprodutos (idProduto, descricao, preco, idImposto, notas) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO produtos (idProduto, descricao, preco, imposto, notas) VALUES (?, ?, ?, ?, ?)";
         try (var ps = cnn.prepareStatement(query)) {
             ps.setString(1, mProduto.getIdProduto());
             ps.setString(2, mProduto.getDescricao());
@@ -75,7 +70,7 @@ public final class Dados {
 
     //---------------------------------------DELETANDO----------------------------------------------------//
     public String deletarProduto(String idProduto) {
-        String sql = "DELETE FROM tbprodutos WHERE idProduto = ?";
+        String sql = "DELETE FROM produtos WHERE idProduto = ?";
         try (var ps = cnn.prepareStatement(sql)) {
             ps.setString(1, idProduto);
             int result = ps.executeUpdate();
@@ -84,10 +79,12 @@ public final class Dados {
                 return "Produto deletado com sucesso!";
             } else {
                 return "Não foi possível deletar este produto!";
+
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dados.class
+                    .getName()).log(Level.SEVERE, null, ex);
             return "Não foi possível deletar este produto!";
         }
     }
@@ -96,7 +93,7 @@ public final class Dados {
     public List<Produto> getProdutos() {
         try {
             List<Produto> produtos = new ArrayList<>();
-            String sql = "SELECT * FROM tbprodutos";
+            String sql = "SELECT * FROM produtos";
             PreparedStatement statement = getConnection().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
 
@@ -105,33 +102,24 @@ public final class Dados {
                         rs.getString("idProduto"),
                         rs.getString("descricao"),
                         rs.getFloat("preco"),
-                        rs.getInt("idImposto"),
+                        rs.getInt("imposto"),
                         rs.getString("notas"));
                 produtos.add(produto);
             }
 
             return produtos;
+
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
+            Logger.getLogger(Dados.class
+                    .getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
             return null;
         }
     }
 
-//    public ResultSet getProdutos() {
-//        try {
-//            String sql = "SELECT * FROM tbprodutos";
-//            PreparedStatement statement = getConnection().prepareStatement(sql);
-//            return statement.executeQuery();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
-//
-//            return null;
-//        }
-//    }
     public Produto getProduto(String idProduto) {
         try {
             Produto mProduto = null;
-            String sql = "SELECT * FROM tbprodutos " + "WHERE idProduto = '" + idProduto + "'";
+            String sql = "SELECT * FROM produtos " + "WHERE idProduto = '" + idProduto + "'";
             Statement st = cnn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
@@ -140,12 +128,14 @@ public final class Dados {
                         rs.getString("idProduto"),
                         rs.getString("descricao"),
                         rs.getFloat("preco"),
-                        rs.getInt("idImposto"),
+                        rs.getInt("imposto"),
                         rs.getString("notas"));
             }
             return mProduto;
+
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dados.class
+                    .getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -153,7 +143,7 @@ public final class Dados {
     //--------------------------------------------------NÚMEROS-------------------------------------------------------------//
     public int numeroProdutos() {
         try {
-            String sql = "SELECT COUNT(*) AS num FROM tbprodutos";
+            String sql = "SELECT COUNT(*) AS num FROM produtos";
             Statement st = cnn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
@@ -161,9 +151,11 @@ public final class Dados {
                 return rs.getInt("num");
             } else {
                 return 0;
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Dados.class
+                    .getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
     }

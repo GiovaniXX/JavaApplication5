@@ -2,6 +2,7 @@ package formularios;
 
 import classes.Dados;
 import classes.Produto;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -11,7 +12,6 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
 
     private Dados dados;
     private final int proAtual = 0;
-    private boolean novo = false;
     private DefaultTableModel mTabela;
     private double preco;
 
@@ -253,7 +253,7 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
             return;
         }
 
-        int pos = dados.posicaoProduto(txtIdProduto.getText());
+        int pos = Dados.posicaoProduto(txtIdProduto.getText());
 
         if (pos != -1) {
             JOptionPane.showMessageDialog(rootPane, "Este produto já existe");
@@ -289,17 +289,17 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void mostrarRegistro() {
-        Produto produto = dados.getProdutos()[proAtual];
-        if (produto != null) {
-            txtIdProduto.setText(dados.getProdutos()[proAtual].getIdProduto());
-            txtDescricao.setText(dados.getProdutos()[proAtual].getDescricao());
-            txtPreco.setText(String.valueOf(dados.getProdutos()[proAtual].getPreco()));
-            cmbImposto.setSelectedIndex(dados.getProdutos()[proAtual].getImposto());
-            txtAnotacao.setText(dados.getProdutos()[proAtual].getAnotacao());
+        List<Produto> produtos = dados.getProdutos();
+        if (proAtual >= 0 && proAtual < produtos.size()) {
+            Produto produto = produtos.get(proAtual);
+            txtIdProduto.setText(produto.getIdProduto());
+            txtDescricao.setText(produto.getDescricao());
+            txtPreco.setText(String.valueOf(produto.getPreco()));
+            cmbImposto.setSelectedIndex(produto.getImposto());
+            txtAnotacao.setText(produto.getAnotacao());
         } else {
             JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
             JOptionPane.showMessageDialog(rootPane, "Cadastre um produto!");
-
         }
     }
 

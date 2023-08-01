@@ -268,7 +268,7 @@ public class FrmFatura extends javax.swing.JInternalFrame {
 //        registro[2] = String.valueOf(dados.getProdutos()[pos].getPreco());
 //        registro[3] = String.valueOf(quantidade);
 //        registro[4] = String.valueOf(quantidade * dados.getProdutos()[pos].getPreco());
-        // Adiciona a linha com os dados do produto à tabela
+        //Adiciona a linha com os dados do produto à tabela
         tableModel.addRow(registro);
 
         totalGeral();
