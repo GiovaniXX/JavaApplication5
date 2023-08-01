@@ -6,31 +6,7 @@ import com.formdev.flatlaf.IntelliJTheme;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    public int perfil;
-    public String senha;
-    public String chave;
-    public String usuario;
     public Dados dados;
-
-    public void setPerfil(int perfil) {
-        this.perfil = perfil;
-    }
-
-    public void setDados(Dados dados) {
-        this.dados = dados;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public void setChave(String chave) {
-        this.chave = chave;
-    }
 
     public FrmPrincipal() {
         initComponents();
