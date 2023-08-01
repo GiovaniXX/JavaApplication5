@@ -12,7 +12,8 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
 
     private Dados dados;
     private final int proAtual = 0;
-    private DefaultTableModel mTabela;
+    private boolean novo = false;
+    private DefaultTableModel tableModel;
     private double preco;
 
     public void setDados(Dados dados) {
@@ -24,7 +25,7 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
         cmbImposto.addItem("0%");
         cmbImposto.addItem("5%");
         cmbImposto.addItem("10%");
-        cmbImposto.addItem("15%");
+        cmbImposto.addItem("15%");       
     }
 
     @SuppressWarnings("unchecked")
@@ -306,16 +307,16 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     private void preencherTabela() {
         String titulos[] = {"ID Produto", "Descrição", "Preço", "Imposto", "Anotação"};
         String registro[] = new String[5];
-        mTabela = new DefaultTableModel(null, titulos);
+        tableModel = new DefaultTableModel(null, titulos);
         for (int i = 0; i < dados.numeroProdutos(); i++) {
-            registro[0] = dados.getProdutos()[i].getIdProduto();
-            registro[1] = dados.getProdutos()[i].getDescricao();
-            registro[2] = String.valueOf(dados.getProdutos()[i].getPreco());
-            registro[3] = imposto(dados.getProdutos()[i].getImposto());
-            registro[4] = dados.getProdutos()[i].getAnotacao();
-            mTabela.addRow(registro);
+            registro[0] = dados.getProdutos().get(i).getIdProduto();
+            registro[1] = dados.getProdutos().get(i).getDescricao();
+            registro[2] = String.valueOf(dados.getProdutos().get(i).getPreco());
+            registro[3] = imposto(dados.getProdutos().get(i).getImposto());
+            registro[4] = dados.getProdutos().get(i).getAnotacao();
+            tableModel.addRow(registro);
         }
-        tblProdutos.setModel(mTabela);
+        tblProdutos.setModel(tableModel);
 
         // Centraliza o conteúdo em cada coluna
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

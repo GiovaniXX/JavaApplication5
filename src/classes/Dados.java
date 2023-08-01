@@ -13,6 +13,10 @@ import java.util.logging.Logger;
 
 public class Dados {
 
+    public static int posicaoProduto(String text) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     public Connection cnn;
 
     public Dados() throws SQLException {
