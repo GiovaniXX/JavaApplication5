@@ -15,19 +15,19 @@ public class Dados {
 
     public Connection cnn;
 
-    public Dados() {
+    public Dados() throws SQLException {
         cnn = getConnection();
     }
 
     private Connection getConnection() {
         try {
-            // Substitua "url_do_banco", "usuario" e "senha" pelas informações corretas do seu banco de dados.
-            String url = "jdbc:mysql://localhost:3306/nome_do_banco_de_dados";
-            String usuario = "seu_usuario";
-            String senha = "sua_senha";
-            cnn = DriverManager.getConnection(url, usuario, senha);
+        // Substitua "url_do_banco", "usuario" e "senha" pelas informações corretas do seu banco de dados.
+        String url = "jdbc:mysql://localhost:3306/sgbd2023";
+        String usuario = "root";
+        String senha = "PerfectWorld2023@$";
+        cnn = DriverManager.getConnection(url, usuario, senha);       
         } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao conectar ao banco de dados", ex);
+        Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao conectar ao banco de dados", ex);
         }
         return null;
     }
@@ -88,8 +88,8 @@ public class Dados {
             return "Não foi possível deletar este produto!";
         }
     }
-    //------------------------------------------------MÉTODOS GETS-------------------------------------------------------//
 
+    //------------------------------------------------MÉTODOS GETS-------------------------------------------------------//
     public List<Produto> getProdutos() {
         try {
             List<Produto> produtos = new ArrayList<>();

@@ -10,7 +10,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     public FrmPrincipal() {
         initComponents();
-        dados = new Dados();
+        //dados = new Dados();
 
     }
 
