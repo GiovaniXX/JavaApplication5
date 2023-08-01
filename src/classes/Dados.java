@@ -3,6 +3,7 @@ package classes;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -13,6 +14,26 @@ public final class Dados {
     public static Connection cnn;
 
     public Dados() {
+    }
+
+    //--------------------------------------------CONNECTION---------------------------------------------------------------//
+    private Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Informações de conexão
+            String dbUrl = "jdbc:mysql://localhost:3306/SGBD2023";
+            String dbUser = "root";
+            String dbPassword = "PerfectWorld2023@$";
+
+            return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao carregar o driver", ex);
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao estabelecer a conexão com o banco de dados", ex);
+            return null;
+        }
     }
 
     //-----------------------------------------------CONFIRMAÇÕES------------------------------------------------------//
@@ -33,7 +54,7 @@ public final class Dados {
     public String adicionarProduto(Produto mProduto) {
         String query = "INSERT INTO tbprodutos (idProduto, descricao, preco, idImposto, notas) VALUES (?, ?, ?, ?, ?)";
         try (var ps = cnn.prepareStatement(query)) {
-            ps.setInt(1, mProduto.getIdProduto());
+            ps.setString(1, mProduto.getIdProduto());
             ps.setString(2, mProduto.getDescricao());
             ps.setDouble(3, mProduto.getPreco());
             ps.setInt(4, mProduto.getImposto());
@@ -70,17 +91,18 @@ public final class Dados {
     }
     //------------------------------------------------MÉTODOS GETS-------------------------------------------------------//
 
-//    public ResultSet getProdutos() {
-//        try {
-//            String sql = "SELECT * FROM tbprodutos";
-//            PreparedStatement statement = getConnection().prepareStatement(sql);
-//            return statement.executeQuery();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
-//
-//            return null;
-//        }
-//    }
+    public ResultSet getProdutos() {
+        try {
+            String sql = "SELECT * FROM tbprodutos";
+            PreparedStatement statement = getConnection().prepareStatement(sql);
+            return statement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
+
+            return null;
+        }
+    }
+
     public Produto getProdutos(String idProduto) {
         try {
             Produto mProduto = null;
@@ -90,7 +112,7 @@ public final class Dados {
 
             if (rs.next()) {
                 mProduto = new Produto(
-                        rs.getInt("idProduto"),
+                        rs.getString("idProduto"),
                         rs.getString("descricao"),
                         rs.getFloat("preco"),
                         rs.getInt("idImposto"),
