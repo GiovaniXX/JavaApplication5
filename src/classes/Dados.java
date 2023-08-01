@@ -29,7 +29,7 @@ public final class Dados {
         }
     }
 
-    //------------------------------------------ADICIONANDO NO SGBD--------------------------------------------------------------//
+    //------------------------------------------ADICIONANDO NO SGBD---------------------------------------------------//
     public String adicionarProduto(Produto mProduto) {
         String query = "INSERT INTO tbprodutos (idProduto, descricao, preco, idImposto, notas) VALUES (?, ?, ?, ?, ?)";
         try (var ps = cnn.prepareStatement(query)) {
@@ -47,27 +47,6 @@ public final class Dados {
         } catch (SQLException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Não foi possível cadastrar o produto", ex);
             return "Produto não pode ser cadastrado devido a um erro de comunicação com o SGBD!";
-        }
-    }
-
-    //---------------------------------------------EDITANDO----------------------------------------------------//
-    public String editarProduto(Produto mProduto) {
-        String sql = "UPDATE tbprodutos SET descricao = ?, preco = ?, idImposto = ?, notas = ? WHERE idProduto = ?";
-        try (var ps = cnn.prepareStatement(sql)) {
-            ps.setString(1, mProduto.getDescricao());
-            ps.setDouble(2, mProduto.getPreco());
-            ps.setInt(3, mProduto.getImposto());
-            ps.setString(4, mProduto.getAnotacao());
-            ps.setInt(5, mProduto.getIdProduto());
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                return "Produto editado com sucesso";
-            } else {
-                return "Não foi possível editar este produto!";
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
-            return "Não foi possível editar este produto devido a um erro de comunicação com o SGBD!";
         }
     }
 
@@ -91,19 +70,18 @@ public final class Dados {
     }
     //------------------------------------------------MÉTODOS GETS-------------------------------------------------------//
 
-    public ResultSet getProdutos() {
-        try {
-            String sql = "SELECT * FROM tbprodutos";
-            PreparedStatement statement = getConnection().prepareStatement(sql);
-            return statement.executeQuery();
-        } catch (SQLException ex) {
-            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
-
-            return null;
-        }
-    }
-
-    public Produto getProduto(String idProduto) {
+//    public ResultSet getProdutos() {
+//        try {
+//            String sql = "SELECT * FROM tbprodutos";
+//            PreparedStatement statement = getConnection().prepareStatement(sql);
+//            return statement.executeQuery();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, "Erro ao obter os produtos", ex);
+//
+//            return null;
+//        }
+//    }
+    public Produto getProdutos(String idProduto) {
         try {
             Produto mProduto = null;
             String sql = "SELECT * FROM tbprodutos " + "WHERE idProduto = '" + idProduto + "'";
