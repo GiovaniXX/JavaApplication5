@@ -1,6 +1,8 @@
 package formularios;
 
 import classes.Database;
+import classes.Produto;
+import javax.swing.JOptionPane;
 
 public class FrmProdutos extends javax.swing.JInternalFrame {
 
@@ -171,6 +173,58 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if (txtProduto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Favor inserir um número de ID");
+            txtProduto.requestFocusInWindow();
+            return;
+        }
+
+        if (txtDescricao.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Favor digitar uma descrição");
+            txtDescricao.requestFocusInWindow();
+            return;
+        }
+
+        if (txtPreco.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Favor digitar o preço");
+            txtPreco.requestFocusInWindow();
+            return;
+        }
+
+        try {
+            double preco = Double.parseDouble(txtPreco.getText());
+            if (preco <= 0) {
+                JOptionPane.showMessageDialog(rootPane, "Favor digitar um número acima de zero");
+                txtPreco.requestFocusInWindow();
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Favor digitar um valor numérico válido");
+            txtPreco.requestFocusInWindow();
+            return;
+        }
+
+        int pos = dados.posicaoProduto(txtProduto.getText());
+
+        if (pos != -1) {
+            JOptionPane.showMessageDialog(rootPane, "Este produto já existe");
+            txtProduto.requestFocusInWindow();
+            return;
+        }
+
+        Produto produto = new Produto(txtProduto.getText(), txtDescricao.getText(), txtPreco, jtaAnotacao.getText());
+        String msg = dados.adicionarProduto(produto);
+        JOptionPane.showMessageDialog(rootPane, msg);
+
+        btnNovo.setEnabled(true);
+        btnSalvar.setEnabled(false);
+
+        txtProduto.setEnabled(false);
+        txtDescricao.setEnabled(false);
+        txtPreco.setEnabled(false);
+        jtaAnotacao.setEnabled(false);
+
+        preencherTabela();
 
         int id = evt.getID();
         System.out.println("ID do evento: " + id);

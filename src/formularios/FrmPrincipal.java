@@ -7,11 +7,12 @@ import com.formdev.flatlaf.IntelliJTheme;
 public class FrmPrincipal extends javax.swing.JFrame {
 
     public Database dados;
+    public String accessCode;
+    public String securityKey;
+    public String user;
 
     public FrmPrincipal() {
         initComponents();
-        //dados = new Dados();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -159,4 +160,20 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu mnuMovimentos;
     private javax.swing.JMenuItem mnuMovimentosNovaVenda;
     // End of variables declaration//GEN-END:variables
+
+    void setDatabase(Database dados) {
+        this.dados = dados;
+    }
+
+    void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
+    }
+
+    void setSecurityKey(String securityKey) {
+        this.securityKey = securityKey;
+    }
+
+    void setUser(String user) {
+        this.user = user;
+    }
 }

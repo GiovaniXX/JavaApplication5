@@ -1,29 +1,89 @@
 package classes;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/sgbd2023";
-    private static final String USUARIO = "root";
-    private static final String SENHA = "PerfectWorld2023@$";
+    public Connection con;
 
-    // Método para obter a conexão com o banco de dados
-    public static Connection obterConexao() {
-        Connection conexao = null;
+    public Database() {
         try {
-            // Carrega o driver JDBC
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // Estabelece a conexão com o banco de dados
-            conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
-            System.out.println("Conexão estabelecida com sucesso!");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver JDBC não encontrado!");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Erro ao estabelecer a conexão com o banco de dados!");
-            e.printStackTrace();
+            Properties props = new Properties();
+            props.load(new FileInputStream("E:/PROJETOS JAVA 2023/sgbd2023/config.properties"));
+            String dbUrl = props.getProperty("db.url");
+            String dbUser = props.getProperty("db.user");
+            String dbPassword = props.getProperty("db.password");
+            con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        } catch (ClassNotFoundException | SQLException | IOException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return conexao;
+    }
+
+    public boolean ValidateUser(String user, String accessCode, String securityKey) {
+        String sql = "SELECT FROM usuarios WHERE iduser = ? AND accessCode = ? AND securityKey = ?";
+        try (var ps = con.prepareStatement(sql)) {
+            ps.setString(1, user);
+            ps.setString(2, accessCode);
+            ps.setString(3, securityKey);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    // Método para salvar a descrição, preço e anotação no banco de dados
+    public static void salvarDados(String descricao, double preco, String anotacao) {
+        Connection conexao = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            // Obtém a conexão com o banco de dados
+            conexao = obterConexao();
+
+            // Prepara a instrução SQL para a inserção
+            String sql = "INSERT INTO produtos (descricao, preco, anotacao) VALUES (?, ?, ?)";
+            preparedStatement = conexao.prepareStatement(sql);
+
+            // Define os valores dos parâmetros da instrução SQL
+            preparedStatement.setString(1, descricao);
+            preparedStatement.setDouble(2, preco);
+            preparedStatement.setString(3, anotacao);
+
+            // Executa a instrução SQL para inserção
+            preparedStatement.executeUpdate();
+
+            System.out.println("Dados salvos no banco de dados com sucesso!");
+        } catch (SQLException ec) {
+            System.out.println("Erro ao salvar os dados no banco de dados!");
+            ec.printStackTrace();
+        } finally {
+            // Fecha o PreparedStatement e a conexão com o banco de dados
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException ed) {
+                    ed.printStackTrace();
+                }
+            }
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ee) {
+                    ee.printStackTrace();
+                }
+            }
+        }
     }
 }
