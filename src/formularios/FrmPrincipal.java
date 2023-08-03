@@ -145,7 +145,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
         } catch (Exception e) {
         }
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new FrmPrincipal().setVisible(true);
         });
