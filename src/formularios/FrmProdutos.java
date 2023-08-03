@@ -2,11 +2,20 @@ package formularios;
 
 import classes.Database;
 import classes.Produto;
+import classes.Utilidades;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class FrmProdutos extends javax.swing.JInternalFrame {
 
     private Database dados;
+    private DefaultTableModel tableModel;
+
+    public void setDatabase(Database dados) {
+        this.dados = dados;
+    }
 
     public FrmProdutos() {
         initComponents();
@@ -212,10 +221,12 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
             return;
         }
 
+        
+
         Produto produto = new Produto(txtProduto.getText(), txtDescricao.getText(), txtPreco, jtaAnotacao.getText());
         String msg = dados.adicionarProduto(produto);
         JOptionPane.showMessageDialog(rootPane, msg);
-
+        
         btnNovo.setEnabled(true);
         btnSalvar.setEnabled(false);
 
@@ -237,11 +248,54 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void mostrarRegistro() {
-
+        List<Produto> produtos = dados.getProdutos();
+        if (proAtual >= 0 && proAtual < produtos.size()) {
+            Produto produto = produtos.get(proAtual);
+            txtIdProduto.setText(produto.getIdProduto());
+            txtDescricao.setText(produto.getDescricao());
+            txtPreco.setText(String.valueOf(produto.getPreco()));
+            txtAnotacao.setText(produto.getAnotacao());
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
+            JOptionPane.showMessageDialog(rootPane, "Cadastre um produto!");
+        }
     }
 
     private void preencherTabela() {
+        String titulos[] = {"ID Produto", "Descrição", "Preço", "Quantidade", "Valor"};
+        String registro[] = new String[5];
+        tableModel = new DefaultTableModel(null, titulos);
+        tblProdutos.setModel(tableModel);
+        tableModel.addRow(registro);
 
+        // Centraliza o conteúdo em cada coluna
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tblProdutos.getColumnCount(); i++) {
+            tblProdutos.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
+    private void totalGeral() {
+        // Inicializar variáveis para calcular o total de quantidade e valor
+        int totalQuantidade = 0;
+        int totalValor = 0;
+
+        // Percorrer todas as linhas da tabela para calcular a soma dos valores dos produtos
+        int rowCount = tblProdutos.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            // Obter a quantidade e o valor do produto na linha atual da tabela
+            int quantidadeProduto = Utilidades.objectToInt(tblProdutos.getValueAt(i, 3));
+            double valorProduto = Utilidades.objectToDouble(tblProdutos.getValueAt(i, 4));
+
+            // Somar a quantidade e o valor do produto aos totais
+            totalQuantidade += quantidadeProduto;
+            totalValor += valorProduto;
+        }
+
+        // Atualizar os campos txtTotalQuantidade e txtTotalValor com os valores totais calculados
+        txtTotalQuantidade.setText(String.valueOf(totalQuantidade));
+        txtTotalValor.setText(String.valueOf(totalValor));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -260,8 +314,4 @@ public class FrmProdutos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPreco;
     private javax.swing.JTextField txtProduto;
     // End of variables declaration//GEN-END:variables
-
-    void setDados(Database dados) {
-        this.dados = dados;
-    }
 }
