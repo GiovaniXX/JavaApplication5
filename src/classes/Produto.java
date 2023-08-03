@@ -45,4 +45,9 @@ public class Produto {
     public void setAnotacao(String anotacao) {
         this.anotacao = anotacao;
     }
+
+    @Override
+    public String toString() {
+        return descricao;
+    }
 }

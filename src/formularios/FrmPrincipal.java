@@ -113,7 +113,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mnuArquivoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuArquivoProdutosActionPerformed
         FrmProdutos produtos = new FrmProdutos();
-        produtos.setDados(dados);
+        produtos.setDatabase(dados);
         dpnDesk.add(produtos);
         produtos.show();
 
@@ -130,7 +130,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void mnuMovimentosNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMovimentosNovaVendaActionPerformed
         FrmVendas vendas = new FrmVendas();
-        vendas.setDados(dados);
+        vendas.setDatabase(dados);
         dpnDesk.add(vendas);
         vendas.show();
 

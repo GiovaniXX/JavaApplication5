@@ -300,7 +300,6 @@ public class FrmLogin extends javax.swing.JFrame {
         FrmPrincipal principal = new FrmPrincipal();
         this.setVisible(false);
         principal.setDatabase(dados);
-        //principal.setProfile(msd.getProfile(jTextField_User.getText()));
         principal.setAccessCode(new String(jPasswordField_AccessCode.getPassword()));
         principal.setSecurityKey(new String(jPasswordField_SecurityKey.getPassword()));
         principal.setUser(jTextField_User.getText());
