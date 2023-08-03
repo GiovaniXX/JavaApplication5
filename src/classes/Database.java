@@ -14,9 +14,13 @@ import java.util.logging.Logger;
 
 public class Database {
 
-    public Connection con;
+    public static Connection con;
 
     public Database() {
+        con = getConnection();
+    }
+
+    private Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Properties props = new Properties();
@@ -24,12 +28,30 @@ public class Database {
             String dbUrl = props.getProperty("db.url");
             String dbUser = props.getProperty("db.user");
             String dbPassword = props.getProperty("db.password");
-            con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        } catch (ClassNotFoundException | SQLException | IOException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+
+            return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, "Erro ao carregar o driver ou ler as propriedades", ex);
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, "Erro ao estabelecer a conexão com o banco de dados", ex);
+            return null;
         }
     }
 
+//    public Database() {
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Properties props = new Properties();
+//            props.load(new FileInputStream("E:/PROJETOS JAVA 2023/sgbd2023/config.properties"));
+//            String dbUrl = props.getProperty("db.url");
+//            String dbUser = props.getProperty("db.user");
+//            String dbPassword = props.getProperty("db.password");
+//            con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+//        } catch (ClassNotFoundException | SQLException | IOException ex) {
+//            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     public boolean ValidateUser(String user, String accessCode, String securityKey) {
         String sql = "SELECT FROM usuarios WHERE iduser = ? AND accessCode = ? AND securityKey = ?";
         try (var ps = con.prepareStatement(sql)) {
@@ -144,8 +166,8 @@ public class Database {
         }
     }
 
-    private Object getConnection() {
-        con = (Connection) getConnection();
-        return null;
-    }
+//    private Object getConnection() {
+//        con = (Connection) getConnection();
+//        return null;
+//    }
 }
