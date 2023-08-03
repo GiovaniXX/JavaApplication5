@@ -1,10 +1,10 @@
 package classes;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -172,16 +172,19 @@ public class Database {
         }
     }
 
-    public void adicionarDetalheVendas(int venda, int produto, java.sql.Date dataAtual, String descricao, double preco, int quantidade, double valor) {
+    public void adicionarDetalheVendas(int venda, int produto, String descricao, String objectToString1, int quantidade, int objectToInt1) {
         try {
             String sql = "INSERT INTO detalhevendas (venda, produto, dataAtual, descricao, preco, quantidade, valor) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, venda);
             st.setInt(2, produto);
+            Date dataAtual = null;
             st.setDate(3, dataAtual);
             st.setString(4, descricao);
+            double preco = 0;
             st.setDouble(5, preco);
             st.setInt(6, quantidade);
+            double valor = 0;
             st.setDouble(7, valor);
 
             st.executeUpdate();

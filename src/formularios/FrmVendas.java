@@ -4,6 +4,7 @@ import classes.Database;
 import classes.Produto;
 import classes.Utilidades;
 import java.util.Date;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -212,8 +213,9 @@ public class FrmVendas extends javax.swing.JInternalFrame {
         }
 
         // Cria um array para armazenar os dados do produto a serem adicionados na tabela
+        Object valor = null;
         int pos = selectedIndex - 1;
-        String[] registro = new String[7];
+        String[] registro = new String[8];
         registro[0] = dados.getProdutos().get(pos).getVenda();
         registro[1] = dados.getProdutos().get(pos).getProduto();
         registro[2] = dados.getProdutos().get(pos).getDataAtual();
