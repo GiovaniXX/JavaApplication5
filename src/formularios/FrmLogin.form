@@ -51,7 +51,7 @@
                               </Group>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jPasswordField_SecurityKey" alignment="1" pref="685" max="32767" attributes="0"/>
-                                  <Component id="jTextField_User" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextField_UserName" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jPasswordField_AccessCode" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -116,7 +116,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField_User" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField_UserName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -190,7 +190,7 @@
         <Property name="text" type="java.lang.String" value="User.:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField_User">
+    <Component class="javax.swing.JTextField" name="jTextField_UserName">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

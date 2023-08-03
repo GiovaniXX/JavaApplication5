@@ -89,7 +89,7 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        jTextField_User = new javax.swing.JTextField();
+        jTextField_UserName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jPasswordField_AccessCode = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
@@ -193,7 +193,7 @@ public class FrmLogin extends javax.swing.JFrame {
                                         .addGap(9, 9, 9)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPasswordField_SecurityKey, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
-                                    .addComponent(jTextField_User)
+                                    .addComponent(jTextField_UserName)
                                     .addComponent(jPasswordField_AccessCode))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,7 +242,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_UserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -285,16 +285,16 @@ public class FrmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_LogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LogInActionPerformed
-        if (!dados.ValidateUser(jTextField_User.getText(),
+        if (!dados.ValidateUser(jTextField_UserName.getText(),
                 new String(jPasswordField_AccessCode.getPassword()),
                 new String(jPasswordField_SecurityKey.getPassword()))) {
             String message = "<html><font color='red'><b>Validation With Database Denied.!</b></font></html>";
             JOptionPane.showMessageDialog(rootPane, message, "ERROR.!", JOptionPane.ERROR_MESSAGE);
 
-            jTextField_User.setText("");
+            jTextField_UserName.setText("");
             jPasswordField_AccessCode.setText("");
             jPasswordField_SecurityKey.setText("");
-            jTextField_User.requestFocusInWindow();
+            jTextField_UserName.requestFocusInWindow();
             return;
         }
         FrmPrincipal principal = new FrmPrincipal();
@@ -302,7 +302,7 @@ public class FrmLogin extends javax.swing.JFrame {
         principal.setDatabase(dados);
         principal.setAccessCode(new String(jPasswordField_AccessCode.getPassword()));
         principal.setSecurityKey(new String(jPasswordField_SecurityKey.getPassword()));
-        principal.setUser(jTextField_User.getText());
+        principal.setUser(jTextField_UserName.getText());
         principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
         principal.setVisible(true);
 
@@ -351,7 +351,7 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JTextField jTextField_User;
+    private javax.swing.JTextField jTextField_UserName;
     // End of variables declaration//GEN-END:variables
 
     private void setIcon() {

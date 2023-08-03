@@ -3,6 +3,7 @@ package formularios;
 import classes.Database;
 import classes.Produto;
 import classes.Utilidades;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -206,17 +207,21 @@ public class FrmVendas extends javax.swing.JInternalFrame {
         List<Produto> produtos = (List<Produto>) dados.getProdutos();
         if (produtos == null || produtos.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Não há produtos cadastrados.");
+            JOptionPane.showMessageDialog(rootPane, "Cadastre um produto.");
             return;
         }
 
         // Cria um array para armazenar os dados do produto a serem adicionados na tabela
         int pos = selectedIndex - 1;
-        String[] registro = new String[5];
-        registro[0] = dados.getProdutos().get(pos).getIdProduto();
-        registro[1] = dados.getProdutos().get(pos).getDescricao();
-        registro[2] = String.valueOf(dados.getProdutos().get(pos).getPreco());
-        registro[3] = String.valueOf(quantidade);
-        registro[4] = String.valueOf(quantidade * dados.getProdutos().get(pos).getPreco());
+        String[] registro = new String[7];
+        registro[0] = dados.getProdutos().get(pos).getVenda();
+        registro[1] = dados.getProdutos().get(pos).getProduto();
+        registro[2] = dados.getProdutos().get(pos).getDataAtual();
+        registro[3] = dados.getProdutos().get(pos).getDescricao();
+        registro[4] = String.valueOf(dados.getProdutos().get(pos).getPreco());
+        registro[5] = String.valueOf(quantidade);
+        registro[6] = String.valueOf(valor);
+        registro[7] = String.valueOf(quantidade * dados.getProdutos().get(pos).getPreco());
 
         //Adiciona a linha com os dados do produto à tabela
         tableModel.addRow(registro);
@@ -254,8 +259,6 @@ public class FrmVendas extends javax.swing.JInternalFrame {
         }
 
         int numVenda = dados.getNumeroVenda();
-        //dadosDB.adicionarVendas(numVenda, ((Opcoes) cmbCliente.getSelectedItem()).getValor(), new Date());
-        //dadosDB.adicionarVendas(numVenda, ((Opcoes) cmbProduto.getSelectedItem()).getValor(), new Date());
 
         int num = tblVendas.getRowCount();
         for (int i = 0; i < num; i++) {

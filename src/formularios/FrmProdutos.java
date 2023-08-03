@@ -2,7 +2,6 @@ package formularios;
 
 import classes.Database;
 import classes.Produto;
-import classes.Utilidades;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
